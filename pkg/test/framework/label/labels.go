@@ -35,3 +35,13 @@ var all = NewSet(
 	Postsubmit,
 	CustomSetup,
 	Flaky)
+
+// Find the label with the given name
+func Find(name string) (Instance, bool) {
+	candidate := Instance(name)
+	if _, ok := all[candidate]; ok {
+		return candidate, true
+	}
+
+	return Instance(""), false
+}

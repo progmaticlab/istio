@@ -1,0 +1,18 @@
+constraints:
+  - collection: istio/networking/v1alpha3/destinationrules
+    check:
+    - exactlyOne:
+      - equals:
+          Body:
+            host: tcp-echo
+            subsets:
+              - labels:
+                  version: v1
+                name: v1
+              - labels:
+                  version: v2
+                name: v2
+          Metadata:
+              name: "{{.Namespace}}/tcp-echo-destination"
+          TypeURL: "type.googleapis.com/istio.networking.v1alpha3.DestinationRule"
+
