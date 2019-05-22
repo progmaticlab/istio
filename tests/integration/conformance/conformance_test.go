@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package compliance
+package conformance
 
 import (
 	"fmt"
@@ -26,8 +26,8 @@ import (
 	"istio.io/istio/pkg/test/framework/components/istio"
 	"istio.io/istio/pkg/test/framework/components/namespace"
 	"istio.io/istio/pkg/test/framework/label"
-	"istio.io/istio/tests/compliance/pkg/compliance"
-	"istio.io/istio/tests/compliance/pkg/compliance/constraint"
+	compliance2 "istio.io/istio/tests/integration/conformance/pkg/conformance"
+	constraint2 "istio.io/istio/tests/integration/conformance/pkg/conformance/constraint"
 )
 
 func TestCompliance(t *testing.T) {
@@ -59,7 +59,7 @@ func TestCompliance(t *testing.T) {
 	})
 }
 
-func getRunTestFn(gal galley.Instance, ca *compliance.Test) func(framework.TestContext) {
+func getRunTestFn(gal galley.Instance, ca *compliance2.Test) func(framework.TestContext) {
 	return func(ctx framework.TestContext) {
 		match := true
 	mainloop:
@@ -99,14 +99,21 @@ func getRunTestFn(gal galley.Instance, ca *compliance.Test) func(framework.TestC
 	}
 }
 
-func runStage(ctx framework.TestContext, gal galley.Instance, ns namespace.Instance, s *compliance.Stage) {
+func runStage(ctx framework.TestContext, gal galley.Instance, ns namespace.Instance, s *compliance2.Stage) {
 	i := s.Input
 	gal.ApplyConfigOrFail(ctx, ns, i)
 
-	p := constraint.Params{
-		Namespace: ns.Name(),
+	if s.MCP != nil {
+		validateMCPState(ctx, gal, ns, s)
 	}
 
+	// More and different types of validations can go here
+}
+
+func validateMCPState(ctx framework.TestContext, gal galley.Instance, ns namespace.Instance, s *compliance2.Stage) {
+	p := constraint2.Params{
+		Namespace: ns.Name(),
+	}
 	for _, coll := range s.MCP.Constraints {
 		gal.WaitForSnapshotOrFail(ctx, coll.Name, func(actuals []*galley.SnapshotObject) error {
 			for _, rangeCheck := range coll.Check {
@@ -126,15 +133,16 @@ func runStage(ctx framework.TestContext, gal galley.Instance, ns namespace.Insta
 			return nil
 		})
 	}
+
 }
 
-func loadCases() ([]*compliance.Test, error) {
+func loadCases() ([]*compliance2.Test, error) {
 	wd, err := os.Getwd()
 	if err != nil {
 		return nil, err
 	}
 	p := path.Join(wd, "cases")
-	return compliance.Load(p)
+	return compliance2.Load(p)
 }
 
 func TestMain(m *testing.M) {

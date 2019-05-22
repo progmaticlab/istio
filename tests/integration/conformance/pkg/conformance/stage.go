@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package compliance
+package conformance
 
 import (
 	"io/ioutil"
@@ -21,7 +21,7 @@ import (
 	"strconv"
 	"strings"
 
-	"istio.io/istio/tests/compliance/pkg/compliance/constraint"
+	"istio.io/istio/tests/integration/conformance/pkg/conformance/constraint"
 )
 
 const (
