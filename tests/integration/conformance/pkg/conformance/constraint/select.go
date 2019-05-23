@@ -127,9 +127,11 @@ func (s *Select) validate(pro proto.Message, p Params) error {
 			return err
 		}
 	case SelectEquals:
-		// TODO
+		// TODO: Implement instance based equals.
 		panic("NYI: SelectEquals")
+
 	case SelectGroup:
+		// do nothing
 
 	default:
 		return fmt.Errorf("unrecognized select operation: %v", s.Op)

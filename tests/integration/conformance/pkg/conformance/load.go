@@ -111,7 +111,6 @@ func loadTest(dir, name string) (*Test, error) {
 
 			stageId, ok := parseStageName(f.Name())
 			if !ok {
-				// TODO: log warning
 				continue
 			}
 

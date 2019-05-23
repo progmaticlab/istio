@@ -1,5 +1,5 @@
 constraints:
-  - collection: istio/authentication/v1alpha1/policies
+  - collection: istio/authentication/v1alpha1/meshpolicies
     check:
     - exactlyOne:
       - equals: {
@@ -7,13 +7,15 @@ constraints:
           "peers": [
           {
             "Params": {
-              "Mtls": {}
+              "Mtls": {
+                "mode": 1 # PERMISSIVE
+              }
             }
           }
           ]
         },
         "Metadata": {
-          "name": "{{.Namespace}}/default"
+          "name": "default"
         },
         "TypeURL": "type.googleapis.com/istio.authentication.v1alpha1.Policy"
       }

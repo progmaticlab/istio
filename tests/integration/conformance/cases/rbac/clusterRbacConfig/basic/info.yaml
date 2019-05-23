@@ -1,7 +1,6 @@
 parallel: false
 environments:
-  # TODO: The local environment does not properly handle the cluster-level
-  # resource handling.
+  # TODO: Galley filesystem source does not handle cluster scoped resources properly. Restrict to Kube environment.
   - kube
 labels:
   - presubmit

@@ -1,3 +1,6 @@
 parallel: false
+environments:
+  # TODO: Galley filesystem source does not handle cluster scoped resources properly. Restrict to Kube environment.
+  - kube
 labels:
   - presubmit
