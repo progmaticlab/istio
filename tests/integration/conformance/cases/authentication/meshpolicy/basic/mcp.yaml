@@ -1,0 +1,20 @@
+constraints:
+  - collection: istio/authentication/v1alpha1/policies
+    check:
+    - exactlyOne:
+      - equals: {
+        "Body": {
+          "peers": [
+          {
+            "Params": {
+              "Mtls": {}
+            }
+          }
+          ]
+        },
+        "Metadata": {
+          "name": "{{.Namespace}}/default"
+        },
+        "TypeURL": "type.googleapis.com/istio.authentication.v1alpha1.Policy"
+      }
+

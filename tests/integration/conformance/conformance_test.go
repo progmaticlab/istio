@@ -1,7 +1,7 @@
 // Copyright 2019 Istio Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
+// you may not use this file except in conformance with the License.
 // You may obtain a copy of the License at
 //
 //     http://www.apache.org/licenses/LICENSE-2.0
@@ -26,11 +26,11 @@ import (
 	"istio.io/istio/pkg/test/framework/components/istio"
 	"istio.io/istio/pkg/test/framework/components/namespace"
 	"istio.io/istio/pkg/test/framework/label"
-	compliance2 "istio.io/istio/tests/integration/conformance/pkg/conformance"
-	constraint2 "istio.io/istio/tests/integration/conformance/pkg/conformance/constraint"
+	"istio.io/istio/tests/integration/conformance/pkg/conformance"
+	"istio.io/istio/tests/integration/conformance/pkg/conformance/constraint"
 )
 
-func TestCompliance(t *testing.T) {
+func TestConformance(t *testing.T) {
 	framework.Run(t, func(ctx framework.TestContext) {
 		cases, err := loadCases()
 		if err != nil {
@@ -51,15 +51,15 @@ func TestCompliance(t *testing.T) {
 			}
 
 			if ca.Metadata.Parallel {
-				tst.RunParallel(getRunTestFn(gal, ca))
+				tst.RunParallel(runCaseFn(gal, ca))
 			} else {
-				tst.Run(getRunTestFn(gal, ca))
+				tst.Run(runCaseFn(gal, ca))
 			}
 		}
 	})
 }
 
-func getRunTestFn(gal galley.Instance, ca *compliance2.Test) func(framework.TestContext) {
+func runCaseFn(gal galley.Instance, ca *conformance.Test) func(framework.TestContext) {
 	return func(ctx framework.TestContext) {
 		match := true
 	mainloop:
@@ -99,7 +99,7 @@ func getRunTestFn(gal galley.Instance, ca *compliance2.Test) func(framework.Test
 	}
 }
 
-func runStage(ctx framework.TestContext, gal galley.Instance, ns namespace.Instance, s *compliance2.Stage) {
+func runStage(ctx framework.TestContext, gal galley.Instance, ns namespace.Instance, s *conformance.Stage) {
 	i := s.Input
 	gal.ApplyConfigOrFail(ctx, ns, i)
 
@@ -110,8 +110,8 @@ func runStage(ctx framework.TestContext, gal galley.Instance, ns namespace.Insta
 	// More and different types of validations can go here
 }
 
-func validateMCPState(ctx framework.TestContext, gal galley.Instance, ns namespace.Instance, s *compliance2.Stage) {
-	p := constraint2.Params{
+func validateMCPState(ctx framework.TestContext, gal galley.Instance, ns namespace.Instance, s *conformance.Stage) {
+	p := constraint.Params{
 		Namespace: ns.Name(),
 	}
 	for _, coll := range s.MCP.Constraints {
@@ -122,8 +122,13 @@ func validateMCPState(ctx framework.TestContext, gal galley.Instance, ns namespa
 					a[i] = item
 					// Clear out for stable comparison.
 					item.Metadata.CreateTime = nil
-					item.Metadata.Annotations = nil
 					item.Metadata.Version = ""
+					if item.Metadata.Annotations != nil {
+						delete(item.Metadata.Annotations, "kubectl.kubernetes.io/last-applied-configuration")
+						if len(item.Metadata.Annotations) == 0 {
+							item.Metadata.Annotations = nil
+						}
+					}
 				}
 
 				if err := rangeCheck.ValidateItems(a, p); err != nil {
@@ -136,18 +141,18 @@ func validateMCPState(ctx framework.TestContext, gal galley.Instance, ns namespa
 
 }
 
-func loadCases() ([]*compliance2.Test, error) {
+func loadCases() ([]*conformance.Test, error) {
 	wd, err := os.Getwd()
 	if err != nil {
 		return nil, err
 	}
 	p := path.Join(wd, "cases")
-	return compliance2.Load(p)
+	return conformance.Load(p)
 }
 
 func TestMain(m *testing.M) {
 	framework.
-		NewSuite("compliance_test", m).
+		NewSuite("conformance_test", m).
 		SetupOnEnv(environment.Kube, istio.Setup(nil, nil)).
 		Run()
 }

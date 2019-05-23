@@ -1,0 +1,7 @@
+parallel: false
+environments:
+  # TODO: The local environment does not properly handle the cluster-level
+  # resource handling.
+  - kube
+labels:
+  - presubmit

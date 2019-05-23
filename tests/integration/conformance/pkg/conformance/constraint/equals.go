@@ -56,8 +56,11 @@ func (e *Equals) ValidateItem(i interface{}, p Params) error {
 	var iJSBytes []byte
 	pro, ok := i.(proto.Message)
 	if ok {
-		// Use proto marshaller to ensure we get proper Javascript representation first.
-		m := jsonpb.Marshaler{}
+		// Use proto marshaller to ensure we get proper JSON representation first.
+		m := jsonpb.Marshaler{
+			EnumsAsInts: false,
+			Indent: "",
+		}
 		s, err := m.MarshalToString(pro)
 		if err != nil {
 			return err
