@@ -16,14 +16,11 @@ package conformance
 
 import (
 	"fmt"
-	"os"
-	"path"
 	"testing"
 
 	"istio.io/istio/pkg/test/framework"
 	"istio.io/istio/pkg/test/framework/components/environment"
 	"istio.io/istio/pkg/test/framework/components/galley"
-	"istio.io/istio/pkg/test/framework/components/istio"
 	"istio.io/istio/pkg/test/framework/components/namespace"
 	"istio.io/istio/pkg/test/framework/label"
 	"istio.io/istio/tests/integration/conformance/pkg/conformance"
@@ -81,10 +78,6 @@ func runCaseFn(gal galley.Instance, ca *conformance.Test) func(framework.TestCon
 			ctx.Skipf("Test is marked as skip")
 		}
 
-		if err := gal.ClearConfig(); err != nil {
-			ctx.Fatalf("Error clearing config: %v", err)
-		}
-
 		ns := namespace.NewOrFail(ctx, ctx, "conv", true)
 
 		if len(ca.Stages) == 1 {
@@ -102,6 +95,9 @@ func runCaseFn(gal galley.Instance, ca *conformance.Test) func(framework.TestCon
 func runStage(ctx framework.TestContext, gal galley.Instance, ns namespace.Instance, s *conformance.Stage) {
 	i := s.Input
 	gal.ApplyConfigOrFail(ctx, ns, i)
+	defer func() {
+		gal.DeleteConfigOrFail(ctx, ns, i)
+	}()
 
 	if s.MCP != nil {
 		validateMCPState(ctx, gal, ns, s)
@@ -139,20 +135,4 @@ func validateMCPState(ctx framework.TestContext, gal galley.Instance, ns namespa
 		})
 	}
 
-}
-
-func loadCases() ([]*conformance.Test, error) {
-	wd, err := os.Getwd()
-	if err != nil {
-		return nil, err
-	}
-	p := path.Join(wd, "cases")
-	return conformance.Load(p)
-}
-
-func TestMain(m *testing.M) {
-	framework.
-		NewSuite("conformance_test", m).
-		SetupOnEnv(environment.Kube, istio.Setup(nil, nil)).
-		Run()
 }
