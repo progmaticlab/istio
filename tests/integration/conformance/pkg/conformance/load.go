@@ -71,7 +71,7 @@ func isTestDir(dir string) (bool, error) {
 	}
 
 	for _, f := range files {
-		if f.Name() == "info.yaml" {
+		if f.Name() == MetadataFileName {
 			return true, nil
 		}
 	}

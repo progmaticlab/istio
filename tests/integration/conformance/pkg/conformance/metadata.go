@@ -23,7 +23,7 @@ import (
 )
 
 // MetadataFileName is the canonical name of the metadata file.
-const MetadataFileName = "info.yaml"
+const MetadataFileName = "test.yaml"
 
 // Metadata about a single test
 type Metadata struct {
