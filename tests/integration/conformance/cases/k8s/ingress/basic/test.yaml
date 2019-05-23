@@ -1,4 +1,4 @@
-parallel: false
+isolated: true
 environments:
   # TODO: Scope to the native environment, until we can update meshconfig in K8s
   - native

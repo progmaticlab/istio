@@ -191,7 +191,7 @@ func check(err error, msg string) {
 func runRetriableTest(t *testing.T, testName string, retries int, f func() error, errorFunc ...func()) {
 	t.Run(testName, func(t *testing.T) {
 		// Run all request tests in parallel.
-		// TODO(nmittler): Consider t.Parallel()?
+		// TODO(nmittler): Consider t.Isolated()?
 
 		remaining := retries
 		for {

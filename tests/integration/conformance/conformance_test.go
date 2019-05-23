@@ -22,9 +22,9 @@ import (
 	"istio.io/istio/pkg/test/framework/components/environment"
 	"istio.io/istio/pkg/test/framework/components/galley"
 	"istio.io/istio/pkg/test/framework/components/namespace"
+	"istio.io/istio/pkg/test/framework/conformance"
+	"istio.io/istio/pkg/test/framework/conformance/constraint"
 	"istio.io/istio/pkg/test/framework/label"
-	"istio.io/istio/tests/integration/conformance/pkg/conformance"
-	"istio.io/istio/tests/integration/conformance/pkg/conformance/constraint"
 )
 
 func TestConformance(t *testing.T) {
@@ -47,10 +47,10 @@ func TestConformance(t *testing.T) {
 				tst = tst.Label(l)
 			}
 
-			if ca.Metadata.Parallel {
-				tst.RunParallel(runCaseFn(gal, ca))
-			} else {
+			if ca.Metadata.Isolated {
 				tst.Run(runCaseFn(gal, ca))
+			} else {
+				tst.RunParallel(runCaseFn(gal, ca))
 			}
 		}
 	})

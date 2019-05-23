@@ -37,9 +37,9 @@ type Test struct {
 	ctx *testContext
 
 	// Indicates that at least one child test is being run in parallel. In Go, when
-	// t.Parallel() is called on a test, execution is halted until the parent test exits.
-	// Only after that point, are the Parallel children are resumed. Because the parent test
-	// must exit before the Parallel children do, we have to defer closing the parent's
+	// t.Isolated() is called on a test, execution is halted until the parent test exits.
+	// Only after that point, are the Isolated children are resumed. Because the parent test
+	// must exit before the Isolated children do, we have to defer closing the parent's
 	// testcontext until after the children have completed.
 	hasParallelChildren bool
 }
@@ -80,7 +80,7 @@ func (t *Test) Run(fn func(ctx TestContext)) {
 }
 
 // RunParallel runs this test in parallel with other children of the same parent test/suite. Under the hood,
-// this relies on Go's t.Parallel() and will, therefore, have the same behavior.
+// this relies on Go's t.Isolated() and will, therefore, have the same behavior.
 //
 // A parallel test will run in parallel with siblings that share the same parent test. The parent test function
 // will exit before the parallel children are executed. It should be noted that if the parent test is prevented
@@ -154,7 +154,7 @@ func (t *Test) runInternal(fn func(ctx TestContext), parallel bool) {
 }
 
 func (t *Test) doRun(ctx *testContext, fn func(ctx TestContext), parallel bool) {
-	// Initial setup if we're running in Parallel.
+	// Initial setup if we're running in Isolated.
 	if parallel {
 		// Inform the parent, who will need to call ctx.Done asynchronously.
 		if t.parent != nil {

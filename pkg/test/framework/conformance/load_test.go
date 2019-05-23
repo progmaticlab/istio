@@ -22,12 +22,12 @@ import (
 
 	. "github.com/onsi/gomega"
 
-	"istio.io/istio/tests/integration/conformance/pkg/conformance/constraint"
+	constraint2 "istio.io/istio/pkg/test/framework/conformance/constraint"
 )
 
 const (
 	metadata = `skip: true
-parallel: true
+isolated: true
 labels:
   - a
   - b
@@ -83,7 +83,7 @@ func TestBasic_NoStages(t *testing.T) {
 			Metadata: &Metadata{
 				Name:         "basic",
 				Skip:         true,
-				Parallel:     true,
+				Isolated:     true,
 				Labels:       []string{"a", "b", "c"},
 				Environments: []string{"kube", "native"},
 			},
@@ -91,16 +91,16 @@ func TestBasic_NoStages(t *testing.T) {
 				{
 					Input:      input,
 					MeshConfig: &msh,
-					MCP: &constraint.Constraints{
-						Constraints: []*constraint.Collection{
+					MCP: &constraint2.Constraints{
+						Constraints: []*constraint2.Collection{
 							{
 								Name: "foo",
-								Check: []constraint.Range{
-									&constraint.ExactlyOne{
-										Constraints: []constraint.Check{
-											&constraint.Select{
+								Check: []constraint2.Range{
+									&constraint2.ExactlyOne{
+										Constraints: []constraint2.Check{
+											&constraint2.Select{
 												Expression: "foo",
-												Op:         constraint.SelectExists,
+												Op:         constraint2.SelectExists,
 											},
 										},
 									},
@@ -143,7 +143,7 @@ func TestBasic_1Stage(t *testing.T) {
 			Metadata: &Metadata{
 				Name:         "basic",
 				Skip:         true,
-				Parallel:     true,
+				Isolated:     true,
 				Labels:       []string{"a", "b", "c"},
 				Environments: []string{"kube", "native"},
 			},
@@ -151,16 +151,16 @@ func TestBasic_1Stage(t *testing.T) {
 				{
 					Input:      input,
 					MeshConfig: &msh,
-					MCP: &constraint.Constraints{
-						Constraints: []*constraint.Collection{
+					MCP: &constraint2.Constraints{
+						Constraints: []*constraint2.Collection{
 							{
 								Name: "foo",
-								Check: []constraint.Range{
-									&constraint.ExactlyOne{
-										Constraints: []constraint.Check{
-											&constraint.Select{
+								Check: []constraint2.Range{
+									&constraint2.ExactlyOne{
+										Constraints: []constraint2.Check{
+											&constraint2.Select{
 												Expression: "foo",
-												Op:         constraint.SelectExists,
+												Op:         constraint2.SelectExists,
 											},
 										},
 									},
@@ -209,7 +209,7 @@ func TestBasic_2Stage(t *testing.T) {
 			Metadata: &Metadata{
 				Name:         "basic",
 				Skip:         true,
-				Parallel:     true,
+				Isolated:     true,
 				Labels:       []string{"a", "b", "c"},
 				Environments: []string{"kube", "native"},
 			},
@@ -217,16 +217,16 @@ func TestBasic_2Stage(t *testing.T) {
 				{
 					Input:      input,
 					MeshConfig: &msh,
-					MCP: &constraint.Constraints{
-						Constraints: []*constraint.Collection{
+					MCP: &constraint2.Constraints{
+						Constraints: []*constraint2.Collection{
 							{
 								Name: "foo",
-								Check: []constraint.Range{
-									&constraint.ExactlyOne{
-										Constraints: []constraint.Check{
-											&constraint.Select{
+								Check: []constraint2.Range{
+									&constraint2.ExactlyOne{
+										Constraints: []constraint2.Check{
+											&constraint2.Select{
 												Expression: "foo",
-												Op:         constraint.SelectExists,
+												Op:         constraint2.SelectExists,
 											},
 										},
 									},
@@ -238,16 +238,16 @@ func TestBasic_2Stage(t *testing.T) {
 				{
 					Input:      input,
 					MeshConfig: &msh,
-					MCP: &constraint.Constraints{
-						Constraints: []*constraint.Collection{
+					MCP: &constraint2.Constraints{
+						Constraints: []*constraint2.Collection{
 							{
 								Name: "foo",
-								Check: []constraint.Range{
-									&constraint.ExactlyOne{
-										Constraints: []constraint.Check{
-											&constraint.Select{
+								Check: []constraint2.Range{
+									&constraint2.ExactlyOne{
+										Constraints: []constraint2.Check{
+											&constraint2.Select{
 												Expression: "foo",
-												Op:         constraint.SelectExists,
+												Op:         constraint2.SelectExists,
 											},
 										},
 									},

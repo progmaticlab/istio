@@ -241,7 +241,7 @@ func (r *ClientResponse) IsHTTPOk() bool {
 func runRetriableTest(t *testing.T, testName string, retries int, f func() error) {
 	t.Run(testName, func(t *testing.T) {
 		// Run all request tests in parallel.
-		// TODO(nmittler): t.Parallel()
+		// TODO(nmittler): t.Isolated()
 
 		remaining := retries
 		var errs error

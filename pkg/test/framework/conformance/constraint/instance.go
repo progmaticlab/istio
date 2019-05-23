@@ -14,28 +14,7 @@
 
 package constraint
 
-// Kind of constraint
-type Kind string
-
-//
-// const (
-// 	Collection Kind = "collection"
-//
-// 	// Any entry should match the constraint
-// 	Any Kind = "Any"
-//
-// 	// ExactlyOne entry should match the constraint
-// 	ExactlyOne Kind = "ExactlyOne"
-//
-// 	// Select an entry based on structpath
-// 	Select Kind = "select"
-//
-// 	// Exists checks for existence, based on structpath
-// 	Exact Kind = "exact"
-//
-// 	// Equals checks for equality based on structpath
-// 	Equals Kind = "equals"
-//
-// 	// NotEquals checks for inequality based on structpath
-// 	NotEquals Kind = "notEquals"
-// )
+// Instance is a constraint instance that can validate a given resource.
+type Instance interface {
+	Check(i interface{}) error
+}

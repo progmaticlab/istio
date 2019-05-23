@@ -33,8 +33,8 @@ type Metadata struct {
 	// Skip the test
 	Skip bool `json:"skip"`
 
-	// Allow running the test in parallel
-	Parallel bool `json:"parallel"`
+	// Run tests in isolated (non-parallel) mode
+	Isolated bool `json:"isolated"`
 
 	// Labels for this test
 	Labels []string `json:"labels"`

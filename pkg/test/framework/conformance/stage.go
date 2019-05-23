@@ -22,7 +22,7 @@ import (
 	"strconv"
 	"strings"
 
-	"istio.io/istio/tests/integration/conformance/pkg/conformance/constraint"
+	constraint2 "istio.io/istio/pkg/test/framework/conformance/constraint"
 )
 
 const (
@@ -42,7 +42,7 @@ type Stage struct {
 	Input string
 
 	// MCP validation rules
-	MCP *constraint.Constraints
+	MCP *constraint2.Constraints
 
 	// MeshConfig (if any) to apply for this stage.
 	MeshConfig *string
@@ -82,7 +82,7 @@ func loadStage(dir string) (*Stage, error) {
 		meshconfig = &s
 	}
 
-	var mcp *constraint.Constraints
+	var mcp *constraint2.Constraints
 	mcpBytes, err := ioutil.ReadFile(path.Join(dir, MCPFileName))
 	if err != nil {
 		if !os.IsNotExist(err) {
@@ -91,7 +91,7 @@ func loadStage(dir string) (*Stage, error) {
 		mcpBytes = nil
 	}
 	if mcpBytes != nil {
-		if mcp, err = constraint.Parse(mcpBytes); err != nil {
+		if mcp, err = constraint2.Parse(mcpBytes); err != nil {
 			return nil, fmt.Errorf("MCP parse error: %v", err)
 		}
 	}

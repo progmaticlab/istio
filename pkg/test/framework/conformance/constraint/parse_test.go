@@ -284,6 +284,10 @@ constraints:
 						if ok {
 							s.Parent = nil
 						}
+
+						for _, c := range s.Children {
+							c.Parent = nil
+						}
 					}
 				}
 			}

@@ -22,7 +22,7 @@ import (
 	"istio.io/istio/pkg/test/framework"
 	"istio.io/istio/pkg/test/framework/components/environment"
 	"istio.io/istio/pkg/test/framework/components/istio"
-	"istio.io/istio/tests/integration/conformance/pkg/conformance"
+	"istio.io/istio/pkg/test/framework/conformance"
 )
 
 func loadCases() ([]*conformance.Test, error) {
