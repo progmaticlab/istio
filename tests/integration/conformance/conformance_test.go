@@ -78,6 +78,9 @@ func runCaseFn(gal galley.Instance, ca *conformance.Test) func(framework.TestCon
 			ctx.Skipf("Test is marked as skip")
 		}
 
+		originalMeshCfg := gal.GetMeshConfigOrFail(ctx)
+		defer gal.SetMeshConfigOrFail(ctx, originalMeshCfg)
+
 		ns := namespace.NewOrFail(ctx, ctx, "conv", true)
 
 		if len(ca.Stages) == 1 {
@@ -93,6 +96,10 @@ func runCaseFn(gal galley.Instance, ca *conformance.Test) func(framework.TestCon
 }
 
 func runStage(ctx framework.TestContext, gal galley.Instance, ns namespace.Instance, s *conformance.Stage) {
+	if s.MeshConfig != nil {
+		gal.SetMeshConfigOrFail(ctx, *s.MeshConfig)
+	}
+
 	i := s.Input
 	gal.ApplyConfigOrFail(ctx, ns, i)
 	defer func() {

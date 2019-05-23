@@ -26,7 +26,6 @@ import (
 var ignoredCollections = []string{
 	// TODO: These are currently missing tests.
 	"istio/networking/v1alpha3/synthetic/serviceentries",
-
 	// Standard K8s resources are used internally
 	"k8s/core/v1/nodes",
 	"k8s/core/v1/pods",

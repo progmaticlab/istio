@@ -30,7 +30,12 @@ func parseRange(rb json.RawMessage) (Range, error) {
 		return nil, err
 	}
 
-	_, found := m["exactlyOne"]
+	_, found := m["empty"]
+	if found {
+		return &Empty{}, nil
+	}
+
+	_, found = m["exactlyOne"]
 	if found {
 		eo := struct {
 			ExactlyOne []json.RawMessage `json:"exactlyOne"`

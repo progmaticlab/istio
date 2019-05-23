@@ -15,6 +15,7 @@
 package conformance
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path"
@@ -65,7 +66,7 @@ func hasStages(dir string) (bool, error) {
 func loadStage(dir string) (*Stage, error) {
 	input, err := ioutil.ReadFile(path.Join(dir, InputFileName))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error loading input file: %v", err)
 	}
 
 	var meshconfig *string
@@ -91,7 +92,7 @@ func loadStage(dir string) (*Stage, error) {
 	}
 	if mcpBytes != nil {
 		if mcp, err = constraint.Parse(mcpBytes); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("MCP parse error: %v", err)
 		}
 	}
 

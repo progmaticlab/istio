@@ -34,7 +34,7 @@ func load(dir, prefix string) ([]*Test, error) {
 	if isTest {
 		t, err := loadTest(dir, prefix)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("Unable to load test: %v (dir: %q)", err, dir)
 		}
 		return []*Test{t}, nil
 	}
@@ -82,7 +82,7 @@ func isTestDir(dir string) (bool, error) {
 func loadTest(dir, name string) (*Test, error) {
 	m, err := loadMetadata(dir, name)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("unable to load metadata: %q", err)
 	}
 
 	staged, err := hasStages(dir)
@@ -116,7 +116,7 @@ func loadTest(dir, name string) (*Test, error) {
 
 			stage, err := loadStage(path.Join(dir, f.Name()))
 			if err != nil {
-				return nil, err
+				return nil, fmt.Errorf("error in stage %d: %v", len(stages), err)
 			}
 			stMap[stageId] = stage
 		}
