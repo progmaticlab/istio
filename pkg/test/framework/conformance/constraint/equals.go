@@ -59,7 +59,7 @@ func (e *Equals) ValidateItem(i interface{}, p Params) error {
 		// Use proto marshaller to ensure we get proper JSON representation first.
 		m := jsonpb.Marshaler{
 			EnumsAsInts: false,
-			Indent: "",
+			Indent:      "",
 		}
 		s, err := m.MarshalToString(pro)
 		if err != nil {

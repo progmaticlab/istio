@@ -106,7 +106,6 @@ func TestMissingMCPTests(t *testing.T) {
 				}
 			}
 
-
 			for _, info := range types.All() {
 				if _, found := ignored[info.Collection.String()]; found {
 					continue
