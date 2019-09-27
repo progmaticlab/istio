@@ -102,7 +102,14 @@ spec:
             cpu: 10m
             memory: 30Mi
         securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
           readOnlyRootFilesystem: true
+          runAsGroup: 1337
+          runAsNonRoot: true
           runAsUser: 1337
         volumeMounts:
         - mountPath: /etc/istio/proxy
