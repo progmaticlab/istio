@@ -111,7 +111,7 @@ Also note:
 
 * Messages can have different levels (Error, Warning, Info).
 * The code range 0000-0100 is reserved for internal and/or future use.
-* Please keep entries in `metadata.yaml` ordered by code.
+* Please keep entries in `messages.yaml` ordered by code.
 
 ### 4. Adding unit tests
 
