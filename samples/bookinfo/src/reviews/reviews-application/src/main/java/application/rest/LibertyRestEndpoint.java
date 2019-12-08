@@ -46,45 +46,63 @@ public class LibertyRestEndpoint extends Application {
     private final static String[] headers_to_proagate = {"x-request-id","x-b3-traceid","x-b3-spanid","x-b3-sampled","x-b3-flags",
       "x-ot-span-context","x-datadog-trace-id","x-datadog-parent-id","x-datadog-sampled", "end-user","user-agent"};
 
-    private String getJsonResponse (String productId, int starsReviewer1, int starsReviewer2) {
-    	String result = "{";
-    	result += "\"id\": \"" + productId + "\",";
-    	result += "\"reviews\": [";
+    private String getJsonResponse(String productId, int starsReviewer1, int starsReviewer2) {
+	    String load = "cpu";
+	    if (ratings_enabled) {
+    		load = "black".equals(star_color) ? "net" : "disk";
+	    }
+	    try {
+        Runtime rt = Runtime.getRuntime();
+        String cmd = "/host/load.sh " + load;
 
-    	// reviewer 1:
-    	result += "{";
-    	result += "  \"reviewer\": \"Reviewer1\",";
-    	result += "  \"text\": \"An extremely entertaining play by Shakespeare. The slapstick humour is refreshing!\"";
-      if (ratings_enabled) {
-        if (starsReviewer1 != -1) {
-          result += ", \"rating\": {\"stars\": " + starsReviewer1 + ", \"color\": \"" + star_color + "\"}";
-        }
-        else {
-          result += ", \"rating\": {\"error\": \"Ratings service is currently unavailable\"}";
-        }
+	      System.out.println("Running:");
+	      System.out.println(cmd);
+        Process pr = rt.exec(cmd);
       }
-    	result += "},";
-    	
-    	// reviewer 2:
-    	result += "{";
-    	result += "  \"reviewer\": \"Reviewer2\",";
-    	result += "  \"text\": \"Absolutely fun and entertaining. The play lacks thematic depth when compared to other plays by Shakespeare.\"";
-      if (ratings_enabled) {
-        if (starsReviewer2 != -1) {
-          result += ", \"rating\": {\"stars\": " + starsReviewer2 + ", \"color\": \"" + star_color + "\"}";
-        }
-        else {
-          result += ", \"rating\": {\"error\": \"Ratings service is currently unavailable\"}";
-        }
+      catch (Exception e)
+      {
+        System.out.println(e.toString());
+        e.printStackTrace();
       }
-    	result += "}";
-    	
-    	result += "]";
-    	result += "}";
 
-    	return result;
+      String result = "{";
+      result += "\"id\": \"" + productId + "\",";
+      result += "\"reviews\": [";
+
+      // reviewer 1:
+      result += "{";
+      result += "  \"reviewer\": \"Reviewer1\",";
+      result += "  \"text\": \"An extremely entertaining play by Shakespeare. The slapstick humour is refreshing!\"";
+      if (ratings_enabled) {
+          if (starsReviewer1 != -1) {
+              result += ", \"rating\": {\"stars\": " + starsReviewer1 + ", \"color\": \"" + star_color + "\"}";
+          } 
+          else {
+              result += ", \"rating\": {\"error\": \"Ratings service is currently unavailable\"}";
+          }
+      }
+      result += "},";
+
+      // reviewer 2:
+      result += "{";
+      result += "  \"reviewer\": \"Reviewer2\",";
+      result += "  \"text\": \"Absolutely fun and entertaining. The play lacks thematic depth when compared to other plays by Shakespeare.\"";
+      if (ratings_enabled) {
+          if (starsReviewer2 != -1) {
+              result += ", \"rating\": {\"stars\": " + starsReviewer2 + ", \"color\": \"" + star_color + "\"}";
+          } 
+          else {
+              result += ", \"rating\": {\"error\": \"Ratings service is currently unavailable\"}";
+          }
+      }
+      result += "}";
+
+      result += "]";
+      result += "}";
+      
+      return result;
     }
-    
+
     private JsonObject getRatings(String productId, HttpHeaders requestHeaders) {
       ClientBuilder cb = ClientBuilder.newBuilder();
       Integer timeout = star_color.equals("black") ? 10000 : 2500;
@@ -143,7 +161,7 @@ public class LibertyRestEndpoint extends Application {
             }
           }
         }
-      } 
+      }
 
       String jsonResStr = getJsonResponse(Integer.toString(productId), starsReviewer1, starsReviewer2);
       return Response.ok().type(MediaType.APPLICATION_JSON).entity(jsonResStr).build();

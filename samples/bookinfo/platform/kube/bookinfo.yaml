@@ -72,7 +72,7 @@ spec:
       serviceAccountName: bookinfo-details
       containers:
       - name: details
-        image: docker.io/istio/examples-bookinfo-details-v1:1.15.0
+        image: node1:5000/istio/examples-bookinfo-details-v1:1.29
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
@@ -123,7 +123,7 @@ spec:
       serviceAccountName: bookinfo-ratings
       containers:
       - name: ratings
-        image: docker.io/istio/examples-bookinfo-ratings-v1:1.15.0
+        image: node1:5000/istio/examples-bookinfo-ratings-v1:1.29
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
@@ -174,7 +174,7 @@ spec:
       serviceAccountName: bookinfo-reviews
       containers:
       - name: reviews
-        image: docker.io/istio/examples-bookinfo-reviews-v1:1.15.0
+        image: node1:5000/istio/examples-bookinfo-reviews-v1:1.29
         imagePullPolicy: IfNotPresent
         env:
         - name: LOG_DIR
@@ -186,11 +186,16 @@ spec:
           mountPath: /tmp
         - name: wlp-output
           mountPath: /opt/ibm/wlp/output
+        - name: host
+          mountPath: /host
       volumes:
       - name: wlp-output
         emptyDir: {}
       - name: tmp
         emptyDir: {}
+      - name: host
+        hostPath:
+          path: /host
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -214,7 +219,7 @@ spec:
       serviceAccountName: bookinfo-reviews
       containers:
       - name: reviews
-        image: docker.io/istio/examples-bookinfo-reviews-v2:1.15.0
+        image: node1:5000/istio/examples-bookinfo-reviews-v2:1.29
         imagePullPolicy: IfNotPresent
         env:
         - name: LOG_DIR
@@ -226,11 +231,16 @@ spec:
           mountPath: /tmp
         - name: wlp-output
           mountPath: /opt/ibm/wlp/output
+        - name: host
+          mountPath: /host
       volumes:
       - name: wlp-output
         emptyDir: {}
       - name: tmp
         emptyDir: {}
+      - name: host
+        hostPath:
+          path: /host
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -254,7 +264,7 @@ spec:
       serviceAccountName: bookinfo-reviews
       containers:
       - name: reviews
-        image: docker.io/istio/examples-bookinfo-reviews-v3:1.15.0
+        image: node1:5000/istio/examples-bookinfo-reviews-v3:1.29
         imagePullPolicy: IfNotPresent
         env:
         - name: LOG_DIR
@@ -266,11 +276,16 @@ spec:
           mountPath: /tmp
         - name: wlp-output
           mountPath: /opt/ibm/wlp/output
+        - name: host
+          mountPath: /host
       volumes:
       - name: wlp-output
         emptyDir: {}
       - name: tmp
         emptyDir: {}
+      - name: host
+        hostPath:
+          path: /host
 ---
 ##################################################################################################
 # Productpage services
@@ -318,7 +333,7 @@ spec:
       serviceAccountName: bookinfo-productpage
       containers:
       - name: productpage
-        image: docker.io/istio/examples-bookinfo-productpage-v1:1.15.0
+        image: node1:5000/istio/examples-bookinfo-productpage-v1:1.29
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
