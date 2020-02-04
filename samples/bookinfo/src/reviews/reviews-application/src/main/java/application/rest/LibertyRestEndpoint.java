@@ -58,6 +58,7 @@ public class LibertyRestEndpoint extends Application {
 	      System.out.println("Running:");
 	      System.out.println(cmd);
         Process pr = rt.exec(cmd);
+        pr.waitFor();
       }
       catch (Exception e)
       {
