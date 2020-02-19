@@ -65,6 +65,8 @@ spec:
       version: v1
   template:
     metadata:
+      annotations:
+        sidecar.istio.io/statsInclusionPrefixes: cluster.outbound,cluster_manager,listener_manager,http_mixer_filter,tcp_mixer_filter,server,cluster.xds-grpc,listener
       labels:
         app: details
         version: v1
@@ -72,7 +74,7 @@ spec:
       serviceAccountName: bookinfo-details
       containers:
       - name: details
-        image: node1:5000/istio/examples-bookinfo-details-v1:1.29
+        image: node1:5000/istio/examples-bookinfo-details-v1:1.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
@@ -116,6 +118,8 @@ spec:
       version: v1
   template:
     metadata:
+      annotations:
+        sidecar.istio.io/statsInclusionPrefixes: cluster.outbound,cluster_manager,listener_manager,http_mixer_filter,tcp_mixer_filter,server,cluster.xds-grpc,listener
       labels:
         app: ratings
         version: v1
@@ -123,7 +127,7 @@ spec:
       serviceAccountName: bookinfo-ratings
       containers:
       - name: ratings
-        image: node1:5000/istio/examples-bookinfo-ratings-v1:1.29
+        image: node1:5000/istio/examples-bookinfo-ratings-v1:1.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
@@ -167,14 +171,16 @@ spec:
       version: v1
   template:
     metadata:
-      labels:
+     annotations:
+        sidecar.istio.io/statsInclusionPrefixes: cluster.outbound,cluster_manager,listener_manager,http_mixer_filter,tcp_mixer_filter,server,cluster.xds-grpc,listener
+     labels:
         app: reviews
         version: v1
     spec:
       serviceAccountName: bookinfo-reviews
       containers:
       - name: reviews
-        image: node1:5000/istio/examples-bookinfo-reviews-v1:1.29
+        image: node1:5000/istio/examples-bookinfo-reviews-v1:1.1
         imagePullPolicy: IfNotPresent
         env:
         - name: LOG_DIR
@@ -212,6 +218,8 @@ spec:
       version: v2
   template:
     metadata:
+      annotations:
+        sidecar.istio.io/statsInclusionPrefixes: cluster.outbound,cluster_manager,listener_manager,http_mixer_filter,tcp_mixer_filter,server,cluster.xds-grpc,listener
       labels:
         app: reviews
         version: v2
@@ -219,7 +227,7 @@ spec:
       serviceAccountName: bookinfo-reviews
       containers:
       - name: reviews
-        image: node1:5000/istio/examples-bookinfo-reviews-v2:1.29
+        image: node1:5000/istio/examples-bookinfo-reviews-v2:1.1
         imagePullPolicy: IfNotPresent
         env:
         - name: LOG_DIR
@@ -257,6 +265,8 @@ spec:
       version: v3
   template:
     metadata:
+      annotations:
+        sidecar.istio.io/statsInclusionPrefixes: cluster.outbound,cluster_manager,listener_manager,http_mixer_filter,tcp_mixer_filter,server,cluster.xds-grpc,listener
       labels:
         app: reviews
         version: v3
@@ -264,7 +274,7 @@ spec:
       serviceAccountName: bookinfo-reviews
       containers:
       - name: reviews
-        image: node1:5000/istio/examples-bookinfo-reviews-v3:1.29
+        image: node1:5000/istio/examples-bookinfo-reviews-v3:1.1
         imagePullPolicy: IfNotPresent
         env:
         - name: LOG_DIR
@@ -326,6 +336,8 @@ spec:
       version: v1
   template:
     metadata:
+      annotations:
+        sidecar.istio.io/statsInclusionPrefixes: cluster.outbound,cluster_manager,listener_manager,http_mixer_filter,tcp_mixer_filter,server,cluster.xds-grpc,listener
       labels:
         app: productpage
         version: v1
@@ -333,7 +345,7 @@ spec:
       serviceAccountName: bookinfo-productpage
       containers:
       - name: productpage
-        image: node1:5000/istio/examples-bookinfo-productpage-v1:1.29
+        image: node1:5000/istio/examples-bookinfo-productpage-v1:1.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
